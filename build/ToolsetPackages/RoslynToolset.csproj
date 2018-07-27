@@ -16,6 +16,8 @@
     <PackageReference Include="RoslynTools.ReferenceAssemblies" Version="$(RoslynToolsReferenceAssembliesVersion)" ExcludeAssets="all" />
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb" Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" ExcludeAssets="all" />
     <PackageReference Include="RoslynTools.BuildTasks" Version="$(RoslynToolsBuildTasksVersion)" ExcludeAssets="all" />
+    <PackageReference Include="opencover" Version="$(opencoverversion)" ExcludeAssets="all" />
+    <PackageReference Include="Codecov" Version="1.0.5" ExcludeAssets="all" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
     <PackageReference Include="FakeSign" Version="$(FakeSignVersion)" ExcludeAssets="all" />

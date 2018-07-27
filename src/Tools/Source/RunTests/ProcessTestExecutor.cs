@@ -27,18 +27,18 @@ namespace RunTests
 
         public string GetCommandLine(AssemblyInfo assemblyInfo)
         {
-            return $"{_options.XunitPath} {GetCommandLineArguments(assemblyInfo)}";
+            return $"{_options.XunitPath} {GetCommandLineArguments(assemblyInfo, _options.XunitPath)}";
         }
 
-        public string GetCommandLineArguments(AssemblyInfo assemblyInfo)
+        public string GetCommandLineArguments(AssemblyInfo assemblyInfo, string xunit)
         {
             var assemblyName = Path.GetFileName(assemblyInfo.AssemblyPath);
             var resultsFilePath = GetResultsFilePath(assemblyInfo);
 
             var builder = new StringBuilder();
-            builder.AppendFormat(@"""{0}""", assemblyInfo.AssemblyPath);
+            builder.AppendFormat(@"{0}", assemblyInfo.AssemblyPath);
             builder.AppendFormat(@" {0}", assemblyInfo.ExtraArguments);
-            builder.AppendFormat(@" -{0} ""{1}""", _options.UseHtml ? "html" : "xml", resultsFilePath);
+            builder.AppendFormat(@" -{0} {1}", _options.UseHtml ? "html" : "xml", resultsFilePath);
             builder.Append(" -noshadow -verbose");
 
             if (!string.IsNullOrWhiteSpace(_options.Trait))
@@ -59,7 +59,15 @@ namespace RunTests
                 }
             }
 
-            return builder.ToString();
+            var targetArgs = "-targetargs:\"" + builder.ToString() +"\"";
+            targetArgs += " -target:" + xunit;
+            targetArgs += " -register:user";
+            targetArgs += " -output:" + resultsFilePath.Replace("html", "xml");
+
+            StringBuilder builder1 = new StringBuilder();
+
+
+            return targetArgs;
         }
 
         private string GetResultsFilePath(AssemblyInfo assemblyInfo)
@@ -72,7 +80,7 @@ namespace RunTests
         {
             try
             {
-                var commandLineArguments = GetCommandLineArguments(assemblyInfo);
+                var commandLineArguments = GetCommandLineArguments(assemblyInfo, _options.XunitPath);
                 var resultsFilePath = GetResultsFilePath(assemblyInfo);
                 var resultsDir = Path.GetDirectoryName(resultsFilePath);
                 var processResultList = new List<ProcessResult>();
@@ -92,7 +100,7 @@ namespace RunTests
                 var start = DateTime.UtcNow;
                 var xunitProcessInfo = ProcessRunner.CreateProcess(
                     ProcessRunner.CreateProcessStartInfo(
-                        _options.XunitPath,
+                        _options.OpenCover,
                         commandLineArguments,
                         displayWindow: false,
                         captureOutput: true,

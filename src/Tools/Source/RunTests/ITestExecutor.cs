@@ -19,9 +19,11 @@ namespace RunTests
         internal bool UseHtml { get; }
         internal bool Test64 { get; }
         internal bool TestVsi { get; }
+        internal string OpenCover { get; }
         
-        internal TestExecutionOptions(string xunitPath, ProcDumpInfo? procDumpInfo, string logsDirectory, string trait, string noTrait, bool useHtml, bool test64, bool testVsi)
+        internal TestExecutionOptions(string xunitPath, string openCover, ProcDumpInfo? procDumpInfo, string logsDirectory, string trait, string noTrait, bool useHtml, bool test64, bool testVsi)
         {
+            OpenCover = openCover;
             XunitPath = xunitPath;
             ProcDumpInfo = procDumpInfo;
             LogsDirectory = logsDirectory;

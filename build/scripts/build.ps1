@@ -566,7 +566,9 @@ function Test-XUnit() {
     $unitDir = Join-Path $configDir "UnitTests"
     $runTests = Join-Path $configDir "Exes\RunTests\RunTests.exe"
     $xunitDir = Join-Path (Get-PackageDir "xunit.runner.console") "tools\net452"
+    $openCoverPath = "C:\Users\appveyor\.nuget\packages\opencover\4.6.519\tools\OpenCover.Console.exe"
     $args = "$xunitDir"
+    $args += " $openCoverPath"
     $args += " -logpath:$logsDir"
     $args += " -nocache"
 

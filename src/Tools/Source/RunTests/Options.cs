@@ -75,6 +75,8 @@ namespace RunTests
         /// </summary>
         public string LogsDirectory { get; set; }
 
+        public string OpenCover { get; set; }
+
         internal static Options Parse(string[] args)
         {
             if (args == null || args.Any(a => a == null) || args.Length < 2)
@@ -96,8 +98,8 @@ namespace RunTests
                 return false;
             }
 
-            var opt = new Options { XunitPath = args[0], UseHtml = true, UseCachedResults = true, LogsDirectory = Directory.GetCurrentDirectory() };
-            var index = 1;
+            var opt = new Options { XunitPath = args[0], OpenCover = args[1], UseHtml = true, UseCachedResults = true, LogsDirectory = Directory.GetCurrentDirectory() };
+            var index = 2;
             var allGood = true;
             while (index < args.Length)
             {
