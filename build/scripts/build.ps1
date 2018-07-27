@@ -623,6 +623,13 @@ function Test-XUnit() {
         Exec-Console $runTests $args
     }
     finally {
+    $coverageFiles = Get-ChildItem -re -in "*.UnitTests.dll.xml" $unitDir
+
+    foreach ($coverageFile in $coverageFiles) {
+    #[System.Diagnostics.Process]::Start("C:\Users\siddhap\.nuget\packages\codecov\1.0.5\tools\codecov.exe", "-f $coverageFile -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef")
+    & "C:\Users\appveyor\.nuget\packages\codecov\1.0.5\tools\codecov.exe" -f $coverageFile -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef
+        
+    }
         Get-Process "xunit*" -ErrorAction SilentlyContinue | Stop-Process
         if ($testIOperation) {
             Remove-Item env:\ROSLYN_TEST_IOPERATION
