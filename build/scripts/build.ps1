@@ -567,7 +567,7 @@ function Test-XUnit() {
     #foreach ($coverageFile in $coverageFiles) {
     #Write-Verbose $coverageFile -verbose
     #[System.Diagnostics.Process]::Start("C:\Users\siddhap\.nuget\packages\codecov\1.0.5\tools\codecov.exe", "-f $coverageFile -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef")
-    & "C:\Users\siddhap\.nuget\packages\codecov\1.0.5\tools\codecov.exe" -f "$configDir/../../Codecoverage/CC/Microsoft.CodeAnalysis.Scripting.Desktop.UnitTests.dll.xml" -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef
+    & "C:\Users\appveyor\.nuget\packages\codecov\1.0.5\tools\codecov.exe" -f "$configDir/../../Codecoverage/CC/Microsoft.CodeAnalysis.Scripting.Desktop.UnitTests.dll.xml" -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef
     #CC\Microsoft.CodeAnalysis.Scripting.Desktop.UnitTests.dll.xml"
     #}
 }
