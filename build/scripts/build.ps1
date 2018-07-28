@@ -620,12 +620,29 @@ function Test-XUnit() {
     }
 
     try {
-        Exec-Console $runTests $args
+        #Exec-Console $runTests $args
     }
     finally {
-    $coverageFiles = Get-ChildItem -re -in "*.UnitTests.dll.xml" $unitDir
+    $url = "https://1drv.ws/u/s!Ar_Mkyv05L9yy6Bqz7j_2CSu0opnxA"
+$output = "$configDir/../../Codecoverage\cc.zip"
+$start_time = Get-Date
+
+[system.io.directory]::CreateDirectory("$configDir/../../CodeCoverage")
+
+$wc = New-Object System.Net.WebClient
+$wc.DownloadFile($url, $output)
+#OR
+(New-Object System.Net.WebClient).DownloadFile($url, $output)
+
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+[System.IO.Compression.ZipFile]::ExtractToDirectory($output, "$configDir/../../Codecoverage")
+
+
+
+    $coverageFiles = Get-ChildItem -re -in "*.UnitTests.dll.xml" "$configDir/../../Codecoverage"
 
     foreach ($coverageFile in $coverageFiles) {
+    Write-Verbose $coverageFile -verbose
     #[System.Diagnostics.Process]::Start("C:\Users\siddhap\.nuget\packages\codecov\1.0.5\tools\codecov.exe", "-f $coverageFile -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef")
     & "C:\Users\appveyor\.nuget\packages\codecov\1.0.5\tools\codecov.exe" -f $coverageFile -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef
         
