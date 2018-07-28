@@ -547,95 +547,25 @@ function Test-XUnitCoreClr() {
 # Core function for running our unit / integration tests tests
 function Test-XUnit() {
 
-    # Used by tests to locate dotnet CLI
-    $env:DOTNET_INSTALL_DIR = Split-Path $dotnet -Parent
-
-    if ($testCoreClr) {
-        Test-XUnitCoreClr
-        return
-    }
-
-    if ($testVsi -or $testVsiNetCore) {
-        Deploy-VsixViaTool
-    }
-
-    if ($testIOperation) {
-        $env:ROSLYN_TEST_IOPERATION = "true"
-    }
-
-    $unitDir = Join-Path $configDir "UnitTests"
-    $runTests = Join-Path $configDir "Exes\RunTests\RunTests.exe"
-    $xunitDir = Join-Path (Get-PackageDir "xunit.runner.console") "tools\net452"
-    $openCoverPath = "C:\Users\appveyor\.nuget\packages\opencover\4.6.519\tools\OpenCover.Console.exe"
-    $args = "$xunitDir"
-    $args += " $openCoverPath"
-    $args += " -logpath:$logsDir"
-    $args += " -nocache"
-
-    if ($testDesktop -or $testIOperation) {
-        if ($test32) {
-            $dlls = Get-ChildItem -re -in "*.UnitTests.dll" $unitDir
-        }
-        else {
-            $dlls = Get-ChildItem -re -in "*.UnitTests.dll" -ex "*InteractiveHost*" $unitDir
-        }
-    }
-    elseif ($testVsi) {
-        # Since they require Visual Studio to be installed, ensure that the MSBuildWorkspace tests run along with our VS
-        # integration tests in CI.
-        if ($cibuild) {
-            $dlls += @(Get-Item (Join-Path $unitDir "Microsoft.CodeAnalysis.Workspaces.MSBuild.UnitTests\Microsoft.CodeAnalysis.Workspaces.MSBuild.UnitTests.dll"))
-        }
-
-        $dlls += @(Get-ChildItem -re -in "*.IntegrationTests.dll" $unitDir)
-    }
-    else {
-        $dlls = Get-ChildItem -re -in "*.IntegrationTests.dll" $unitDir
-        $args += " -trait:Feature=NetCore"
-    }
-
-    # Exclude out the multi-targetted netcore app projects
-    $dlls = $dlls | ?{ -not ($_.FullName -match ".*netcoreapp.*") }
-
-    # Exclude out the ref assemblies
-    $dlls = $dlls | ?{ -not ($_.FullName -match ".*\\ref\\.*") }
-    $dlls = $dlls | ?{ -not ($_.FullName -match ".*/ref/.*") }
-
-    if ($cibuild -or $official) {
-        # Use a 75 minute timeout on CI
-        $args += " -xml -timeout:75"
-    }
-
-    if ($procdump) {
-        $procdumpPath = Ensure-ProcDump
-        $args += " -procdumppath:$procDumpPath"
-    }
-
-    if ($test64) {
-        $args += " -test64"
-    }
-
-    foreach ($dll in $dlls) {
-        $args += " $dll"
-    }
+    
 
     try {
         #Exec-Console $runTests $args
     }
     finally {
     $url = "https://1drv.ws/u/s!Ar_Mkyv05L9yy6Bqz7j_2CSu0opnxA"
-$output = "$configDir/../../Codecoverage\cc.zip"
-$start_time = Get-Date
+    $output = "$configDir/../../Codecoverage\cc.zip"
+    $start_time = Get-Date
 
-[system.io.directory]::CreateDirectory("$configDir/../../CodeCoverage")
+    [system.io.directory]::CreateDirectory("$configDir/../../CodeCoverage")
 
-$wc = New-Object System.Net.WebClient
-$wc.DownloadFile($url, $output)
-#OR
-(New-Object System.Net.WebClient).DownloadFile($url, $output)
+    $wc = New-Object System.Net.WebClient
+    $wc.DownloadFile($url, $output)
+    #OR
+    (New-Object System.Net.WebClient).DownloadFile($url, $output)
 
-Add-Type -AssemblyName System.IO.Compression.FileSystem
-[System.IO.Compression.ZipFile]::ExtractToDirectory($output, "$configDir/../../Codecoverage")
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($output, "$configDir/../../Codecoverage")
 
 
 
@@ -646,11 +576,6 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
     #[System.Diagnostics.Process]::Start("C:\Users\siddhap\.nuget\packages\codecov\1.0.5\tools\codecov.exe", "-f $coverageFile -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef")
     & "C:\Users\appveyor\.nuget\packages\codecov\1.0.5\tools\codecov.exe" -f $coverageFile -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef
         
-    }
-        Get-Process "xunit*" -ErrorAction SilentlyContinue | Stop-Process
-        if ($testIOperation) {
-            Remove-Item env:\ROSLYN_TEST_IOPERATION
-        }
     }
 }
 
