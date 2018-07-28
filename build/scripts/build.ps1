@@ -569,7 +569,7 @@ function Test-XUnit() {
     Write-Verbose $coverageFile -verbose
     #[System.Diagnostics.Process]::Start("C:\Users\siddhap\.nuget\packages\codecov\1.0.5\tools\codecov.exe", "-f $coverageFile -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef")
     & "C:\Users\appveyor\.nuget\packages\codecov\1.0.5\tools\codecov.exe" -f $coverageFile -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef
-    if($i > 5){break}
+    if($i -eq 5){break}
     #CC\Microsoft.CodeAnalysis.Scripting.Desktop.UnitTests.dll.xml"
     }
 }
