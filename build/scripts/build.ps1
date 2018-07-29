@@ -576,6 +576,7 @@ function Test-XUnit() {
 
     if($coverageFile -like '*Microsoft.CodeAnalysis.Scripting.UnitTests.dll.xml'){
     & "C:\Users\appveyor\.nuget\packages\codecov\1.0.5\tools\codecov.exe" -f $coverageFile -t 366dc8d3-f9ca-4344-9621-25c6c1cb83ef
+
     }
 
     #CC\Microsoft.CodeAnalysis.Scripting.Desktop.UnitTests.dll.xml"
