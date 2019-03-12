@@ -13,20 +13,20 @@ namespace RunTests
     {
         internal string XunitPath { get; }
         internal ProcDumpInfo? ProcDumpInfo { get; }
-        internal string LogsDirectory { get; }
+        internal string OutputDirectory { get; }
         internal string Trait { get; }
         internal string NoTrait { get; }
         internal bool UseHtml { get; }
         internal bool Test64 { get; }
         internal bool TestVsi { get; }
         internal string OpenCover { get; }
-        
-        internal TestExecutionOptions(string xunitPath, string openCover, ProcDumpInfo? procDumpInfo, string logsDirectory, string trait, string noTrait, bool useHtml, bool test64, bool testVsi)
+
+        internal TestExecutionOptions(string xunitPath, ProcDumpInfo? procDumpInfo, string outputDirectory, string trait, string noTrait, bool useHtml, bool test64, bool testVsi)
         {
             OpenCover = openCover;
             XunitPath = xunitPath;
             ProcDumpInfo = procDumpInfo;
-            LogsDirectory = logsDirectory;
+            OutputDirectory = outputDirectory;
             Trait = trait;
             NoTrait = noTrait;
             UseHtml = useHtml;
@@ -54,12 +54,10 @@ namespace RunTests
         /// Path to the results file.  Can be null in the case xunit error'd and did not create one.
         /// </summary>
         internal string ResultsFilePath { get; }
-        internal string ResultsDirectory { get; }
 
-        internal TestResultInfo(int exitCode, string resultsDirectory, string resultsFilePath, TimeSpan elapsed, string standardOutput, string errorOutput)
+        internal TestResultInfo(int exitCode, string resultsFilePath, TimeSpan elapsed, string standardOutput, string errorOutput)
         {
             ExitCode = exitCode;
-            ResultsDirectory = resultsDirectory;
             ResultsFilePath = resultsFilePath;
             Elapsed = elapsed;
             StandardOutput = standardOutput;
@@ -89,7 +87,6 @@ namespace RunTests
         internal string StandardOutput => TestResultInfo.StandardOutput;
         internal string ErrorOutput => TestResultInfo.ErrorOutput;
         internal string ResultsFilePath => TestResultInfo.ResultsFilePath;
-        internal string ResultsDirectory => TestResultInfo.ResultsDirectory;
 
         internal TestResult(AssemblyInfo assemblyInfo, TestResultInfo testResultInfo, string commandLine, bool isFromCache, ImmutableArray<ProcessResult> processResults = default, string diagnostics = null)
         {
@@ -104,6 +101,8 @@ namespace RunTests
 
     internal interface ITestExecutor
     {
+        TestExecutionOptions Options { get; }
+
         IDataStorage DataStorage { get; }
 
         string GetCommandLine(AssemblyInfo assemblyInfo);

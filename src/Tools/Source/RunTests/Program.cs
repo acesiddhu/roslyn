@@ -156,7 +156,7 @@ namespace RunTests
 
         private static void WriteLogFile(Options options)
         {
-            var logFilePath = Path.Combine(options.LogsDirectory, "runtests.log");
+            var logFilePath = Path.Combine(options.LogFilesOutputDirectory, "runtests.log");
             try
             {
                 using (var writer = new StreamWriter(logFilePath, append: false))
@@ -244,7 +244,7 @@ namespace RunTests
         {
             if (!string.IsNullOrEmpty(options.ProcDumpDirectory))
             {
-                return new ProcDumpInfo(Path.Combine(options.ProcDumpDirectory, "procdump.exe"), options.LogsDirectory);
+                return new ProcDumpInfo(Path.Combine(options.ProcDumpDirectory, "procdump.exe"), options.LogFilesOutputDirectory);
             }
 
             return null;
@@ -352,8 +352,8 @@ namespace RunTests
             var testExecutionOptions = new TestExecutionOptions(
                 xunitPath: options.XunitPath,
                 openCover: options.OpenCover,
-                procDumpInfo: GetProcDumpInfo(options),
-                logsDirectory: options.LogsDirectory,
+                procDumpInfo: options.UseProcDump ? GetProcDumpInfo(options) : null,
+                outputDirectory: options.TestResultXmlOutputDirectory,
                 trait: options.Trait,
                 noTrait: options.NoTrait,
                 useHtml: options.UseHtml,
@@ -374,7 +374,7 @@ namespace RunTests
                 dataStorage = new WebDataStorage();
             }
 
-            return new CachingTestExecutor(testExecutionOptions, processTestExecutor, dataStorage);
+            return new CachingTestExecutor(processTestExecutor, dataStorage);
         }
 
         /// <summary>
