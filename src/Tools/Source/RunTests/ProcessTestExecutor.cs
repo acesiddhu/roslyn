@@ -28,7 +28,7 @@ namespace RunTests
 
         public string GetCommandLine(AssemblyInfo assemblyInfo)
         {
-            return $"{Options.XunitPath} {GetCommandLineArguments(assemblyInfo, _options.XunitPath)}";
+            return $"{Options.XunitPath} {GetCommandLineArguments(assemblyInfo, Options.XunitPath)}";
         }
 
         public string GetCommandLineArguments(AssemblyInfo assemblyInfo, string xunit)
@@ -80,7 +80,7 @@ namespace RunTests
         {
             try
             {
-                var commandLineArguments = GetCommandLineArguments(assemblyInfo, _options.XunitPath);
+                var commandLineArguments = GetCommandLineArguments(assemblyInfo, Options.XunitPath);
                 var resultsFilePath = GetResultsFilePath(assemblyInfo);
                 var resultsDir = Path.GetDirectoryName(resultsFilePath);
                 var processResultList = new List<ProcessResult>();

@@ -21,7 +21,7 @@ namespace RunTests
         internal bool TestVsi { get; }
         internal string OpenCover { get; }
 
-        internal TestExecutionOptions(string xunitPath, ProcDumpInfo? procDumpInfo, string outputDirectory, string trait, string noTrait, bool useHtml, bool test64, bool testVsi)
+        internal TestExecutionOptions(string xunitPath, string openCover, ProcDumpInfo? procDumpInfo, string outputDirectory, string trait, string noTrait, bool useHtml, bool test64, bool testVsi)
         {
             OpenCover = openCover;
             XunitPath = xunitPath;
