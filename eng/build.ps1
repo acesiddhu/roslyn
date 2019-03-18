@@ -340,7 +340,9 @@ function TestUsingOptimizedRunner() {
     }
 
     $xunitDir = Join-Path (Get-PackageDir "xunit.runner.console") "tools\net472"
+    $openCoverPath = Join-Path ((Get-PackageDir "xunit.runner.console").Replace("xunit.runner.console\2.4.1-pre.build.4059", "OpenCover")) "4.7.922\tools\OpenCover.Console.exe"
     $args = "`"$xunitDir`""
+    $args += " `"$openCoverPath`""
     $args += " `"-out:$testResultsDir`""
     $args += " `"-logs:$LogDir`""
     $args += " -nocache"

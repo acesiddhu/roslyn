@@ -115,7 +115,7 @@ namespace RunTests
             }
 
             var opt = new Options { XunitPath = args[0], OpenCover = args[1], UseHtml = true, UseCachedResults = true, TestResultXmlOutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), "TestResults") };
-            var index = 1;
+            var index = 2;
             var allGood = true;
             while (index < args.Length)
             {

@@ -100,7 +100,6 @@ namespace RunTests
                 var start = DateTime.UtcNow;
                 var xunitProcessInfo = ProcessRunner.CreateProcess(
                     ProcessRunner.CreateProcessStartInfo(
-                        Options.XunitPath,
                         Options.OpenCover,
                         commandLineArguments,
                         displayWindow: false,
