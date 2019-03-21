@@ -62,7 +62,7 @@ namespace RunTests
 
             var targetArgs = "-targetargs:\"" + builder.ToString() +"\"";
             targetArgs += " -target:" + xunit;
-            targetArgs += " -filter:\"+[*]* -[xunit*]*\"";
+            targetArgs += " -filter:\"+[*]* -[xunit*]*\"";//test
             targetArgs += " -register:user";
             targetArgs += " -output:" + resultsFilePath.Replace("html", "xml");
 
